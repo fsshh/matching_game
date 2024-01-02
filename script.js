@@ -1,10 +1,6 @@
 var grid_container = document.getElementById('grid-container');
 var num_button = document.querySelectorAll('.num_button');
 
-// check if the user has click the number button/s atleast once
-let clickedOnce = false;
-let previousValue = 0;
- 
 // START
 elementDisplay('flex', 'none');
 
@@ -20,32 +16,29 @@ num_button.forEach(bttn => {
  
         elementDisplay('none', 'flex');
 
-        if(previousValue != buttonValue_Squared){
+        for (let i = 0; i < buttonValue_Squared; i++) {
+            
+            var newDiv = document.createElement('div');
+            newDiv.className = 'box';
+            grid_container.appendChild(newDiv);
 
-            for (let i = 0; i < buttonValue_Squared; i++) {
-                
-                var newDiv = document.createElement('div');
-                newDiv.className = 'box';
-                grid_container.appendChild(newDiv);
-
-                var svg_img = document.createElement("img");
-                svg_img.className = "element_svg";
-                newDiv.appendChild(svg_img);
-            }
-
-            var box = document.getElementsByClassName('box');
-            var svgImage = document.querySelectorAll('.element_svg');
-            addFruitToElement(box, svgImage);
-
-            grid_container.style.gridTemplate = `repeat(${buttonValue_Int}, 1fr) / repeat(${buttonValue_Int}, 1fr)`;
-
-            previousValue = buttonValue_Squared;
+            var svg_img = document.createElement("img");
+            svg_img.className = "element_svg";
+            newDiv.appendChild(svg_img);
         }
-        else {alert('number of element has already exists');}
 
-        clickedOnce = true;
-    })
+        var box = document.querySelectorAll('.box');
+        var svgImage = document.querySelectorAll('.element_svg');
+        addFruitToElement(box, svgImage);
+        gameMechanic(box, svgImage);
+
+        // STYLE THE GRID CONTAINER USING THE BUTTON VALUE AS REFERENCE FOR THE ROWS AND COLUMNS OF THE GRID
+        grid_container.style.gridTemplate = `repeat(${buttonValue_Int}, 1fr) / repeat(${buttonValue_Int}, 1fr)`;
+
+    });
 });
+
+
 
 function elementDisplay(buttonDisplay, boxDisplay){
     var box_container = document.getElementById('box_container');
@@ -100,4 +93,75 @@ function addFruitToElement(elementClass, svg_image){
         secondHalf++;
         i++;
     }
+}
+
+function gameMechanic(boxElement) {
+    // THE TWO VARIABLES THAT WILL CATCH THE USER'S CHOSEN FRUITS
+    let pickedElement1 = '';
+    let pickedElement2 = '';
+
+    let clickCount = 0;
+
+    let all_SvgClass = document.querySelectorAll('.element_svg');
+    boxElement.forEach(function(box){
+        let svg = box.querySelector('.element_svg');
+
+        svg.style.opacity = '0%';
+        box.addEventListener('click', () =>{
+            // IF THE ELEMENT DOES NOT HAVE A MATCH AND VISIBLE
+            if(!svg.classList.contains('matched')){    
+                svg.style.opacity = '100%';
+                clickCount++;
+                if(clickCount === 1){
+                    // GET THE CURRENT ELEMENT_SVG'S FILE PATH/SRC AS A REFERENCE
+                    pickedElement1 = svg.src;
+
+                    // ADD THE "MATCHED" AND "PICKED" CLASS AS A PLACEHOLDER TO TELL WHICH ARE THE USER'S PAIR OF PICKED FRUITS
+                    svg.classList.add('matched');
+                    svg.classList.add('picked');
+
+                    console.log(pickedElement1);
+                }
+                
+                else if(clickCount === 2){
+                    // GET THE CURRENT ELEMENT_SVG'S FILE PATH/SRC AS A REFERENCE
+                    pickedElement2 = svg.src;
+
+                    // ADD THE "MATCHED" AND "PICKED" CLASS AS A PLACEHOLDER TO TELL WHICH ARE THE USER'S PAIR OF PICKED FRUITS
+                    svg.classList.add('matched');
+                    svg.classList.add('picked');
+
+                    console.log(pickedElement2);
+
+                    // REMOVE THE PICKED AND MATCHED CLASSES TO RESTART THE PICKING PROCESS OF THE CHOSEN FRUITS IF THEY DO NOT MATCH
+                    if(pickedElement1 != pickedElement2){
+                        // DELAY THE PROCESS TO SHOW THE USER'S ERROR BY 0.5 SECONDS
+                        setTimeout(() => { 
+                            all_SvgClass.forEach(svg_Item =>{
+                                if(svg_Item.classList.contains('picked')){
+                                    svg_Item.classList.remove('matched')
+                                    svg_Item.classList.remove('picked')
+                                    svg_Item.style.opacity = "0%";
+                                        
+                                }
+                            })
+                        }, 500);
+                        
+                        clickCount = 0;
+                    }
+                    else{
+                        all_SvgClass.forEach(svg_Item =>{
+                            if(svg_Item.classList.contains('picked')){
+                                svg_Item.classList.remove('picked')
+                                
+                            }
+                        })
+
+                        clickCount = 0;
+                    }   
+                }
+            }
+        });
+    });
+   
 }

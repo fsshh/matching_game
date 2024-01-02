@@ -47,6 +47,8 @@ body{
 .element_svg{
     width: 50%;
     height: 50%;
+
+    transition: all .2s;
 }
 
 #button_container{
