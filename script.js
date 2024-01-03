@@ -2,6 +2,7 @@ var grid_container = document.getElementById('grid-container');
 var num_button = document.querySelectorAll('.num_button');
 
 // START
+// SHOWS THE OPTION MENU
 elementDisplay('flex', 'none');
 
 // UPDATE
@@ -13,7 +14,7 @@ num_button.forEach(bttn => {
     var buttonValue_Squared = buttonValue_Int * buttonValue_Int;
 
     bttn.addEventListener('click', () =>{
- 
+        // SHOWS THE GAME
         elementDisplay('none', 'flex');
 
         for (let i = 0; i < buttonValue_Squared; i++) {
@@ -42,10 +43,10 @@ num_button.forEach(bttn => {
 
 function elementDisplay(buttonDisplay, boxDisplay){
     var box_container = document.getElementById('box_container');
-    var button_container = document.getElementById('button_container');
+    var menu_container = document.getElementById('menu_container');
     
     box_container.style.display = boxDisplay;
-    button_container.style.display = buttonDisplay;
+    menu_container.style.display = buttonDisplay;
 }
 
 
@@ -101,6 +102,7 @@ function gameMechanic(boxElement) {
     let pickedElement2 = '';
 
     let clickCount = 0;
+    let matchedCount = 0;
 
     let all_SvgClass = document.querySelectorAll('.element_svg');
     boxElement.forEach(function(box){
@@ -119,8 +121,6 @@ function gameMechanic(boxElement) {
                     // ADD THE "MATCHED" AND "PICKED" CLASS AS A PLACEHOLDER TO TELL WHICH ARE THE USER'S PAIR OF PICKED FRUITS
                     svg.classList.add('matched');
                     svg.classList.add('picked');
-
-                    console.log(pickedElement1);
                 }
                 
                 else if(clickCount === 2){
@@ -130,8 +130,6 @@ function gameMechanic(boxElement) {
                     // ADD THE "MATCHED" AND "PICKED" CLASS AS A PLACEHOLDER TO TELL WHICH ARE THE USER'S PAIR OF PICKED FRUITS
                     svg.classList.add('matched');
                     svg.classList.add('picked');
-
-                    console.log(pickedElement2);
 
                     // REMOVE THE PICKED AND MATCHED CLASSES TO RESTART THE PICKING PROCESS OF THE CHOSEN FRUITS IF THEY DO NOT MATCH
                     if(pickedElement1 != pickedElement2){
@@ -153,10 +151,22 @@ function gameMechanic(boxElement) {
                         all_SvgClass.forEach(svg_Item =>{
                             if(svg_Item.classList.contains('picked')){
                                 svg_Item.classList.remove('picked')
-                                
+                                matchedCount++;
                             }
                         })
-
+                        console.log(matchedCount);
+                        // !! WIN CONDITION !!
+                        // IF ALL THE FRUIT HAS A PAIR
+                        if(matchedCount === boxElement.length){
+                            setTimeout(() => {                                
+                                alert('Win');
+                                // DELETE THE ELEMENTS TO PREVENT OVERLAPPING AND TO RESET THE GAME
+                                boxElement.forEach(el =>{
+                                    el.remove();
+                                })
+                                elementDisplay('flex', 'none');
+                            }, 500);
+                        }
                         clickCount = 0;
                     }   
                 }
