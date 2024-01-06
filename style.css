@@ -21,7 +21,6 @@ body{
 
 #title_menu{
     color: #E6D0B2;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -108,7 +107,9 @@ body{
 
 .num_button{
     width: 10%;
-    height: 10%;
+    height: 17%;
+    font-size: 1.5rem;
+    color: #B08E6B;
     background-color: rgb(230,208,178);
 
     border: 1px solid white;
@@ -130,4 +131,69 @@ body{
 #source_code_text{
     color: #E6D0B2;
     font-size: 1.5rem;
+}
+
+/* SMARTPHONE SIZE */
+@media screen and (max-width: 450px) { 
+    #grid-container{
+        width: 95%;
+        height: 70%;
+    }
+    .box{
+        border-radius: 10px;
+    }
+
+    #game_title{
+        font-size: 3.5rem;
+    }
+
+    #developer_name{
+        font-size: 1.5rem;
+    }
+    .num_button{
+        width: 20%;
+        height: 20%;
+        font-size: 2rem;
+    }
+}
+
+/* SMARTPHONE SIZE */
+@media screen and (max-width: 750px) and (min-width: 451px){ 
+    #grid-container{
+        width: 80%;
+        height: 80%;
+    }
+}
+
+/* TABLET SIZE */
+@media screen and (max-width: 1024px) and (min-width: 751px){ 
+    #grid-container{
+        width: 80%;
+        height: 80%;
+    }
+
+    #game_title{
+        font-size: 6rem;
+    }
+    #developer_name{
+        font-size: 2.5rem;
+    }
+
+    #source_code_text{
+        font-size: 3rem;
+    }
+
+    #github_svg_image{
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* COMBINED SMARTPHONE TO TABLET SIZE */
+@media screen and (max-width: 1024px) and (min-width: 451px){
+    .num_button{
+        width: 20%;
+        height: 20%;
+        font-size: 4rem;
+    }
 }
